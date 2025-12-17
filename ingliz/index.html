@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manga Animals - Amazing Animal World</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0e27;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(139, 92, 246, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+        }
+
+        header {
+            background: rgba(10, 14, 39, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));
+            animation: logoGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5)); }
+            50% { filter: drop-shadow(0 0 30px rgba(236, 72, 153, 0.8)); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #a78bfa;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-links a:hover::before {
+            left: 100%;
+        }
+
+        .nav-links a:hover {
+            background: rgba(139, 92, 246, 0.2);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: slideDown 1s ease-out;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: #a78bfa;
+            animation: slideUp 1s ease-out;
+            font-weight: 300;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-box {
+            margin: 2rem auto;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1.2rem 1.8rem;
+            font-size: 1.1rem;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 50px;
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        .search-box input::placeholder {
+            color: #6b7280;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+            transform: scale(1.02);
+        }
+
+        .animals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .animal-card {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .animal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .animal-card:hover::before {
+            left: 100%;
+        }
+
+        .animal-card:hover {
+            transform: translateY(-15px);
+            border-color: #8b5cf6;
+            box-shadow: 0 25px 50px rgba(139, 92, 246, 0.4);
+        }
+
+        .animal-image {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 7rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animal-image::after {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .animal-card:hover .animal-image {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .animal-info {
+            padding: 1.8rem;
+        }
+
+        .animal-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .animal-info p {
+            color: #9ca3af;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .fun-fact {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(236, 72, 153, 0.3) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            color: #e9d5ff;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            margin-top: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            border: 2px solid rgba(139, 92, 246, 0.4);
+            padding: 3rem;
+            border-radius: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+            to { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2.5rem;
+            cursor: pointer;
+            color: #8b5cf6;
+            transition: all 0.3s;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .close-btn:hover {
+            background: rgba(139, 92, 246, 0.3);
+            transform: rotate(90deg);
+        }
+
+        footer {
+            background: rgba(10, 14, 39, 0.8);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+            color: #9ca3af;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0e27;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                gap: 0.5rem;
+            }
+
+            .nav-links a {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .animals-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .animal-image {
+                font-size: 5rem;
+                height: 220px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <header>
+        <nav>
+            <div class="logo">🐾 Manga Animals</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showSection('all')">All</a></li>
+                <li><a href="#" onclick="showSection('wild')">Wild</a></li>
+                <li><a href="#" onclick="showSection('domestic')">Domestic</a></li>
+                <li><a href="#" onclick="showSection('sea')">Sea</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <h1>🌟 Welcome to the Animal World! 🌟</h1>
+        <p>Discover fascinating facts about amazing animals</p>
+    </div>
+
+    <div class="container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Search animals..." onkeyup="searchAnimals()">
+        </div>
+
+        <div class="animals-grid" id="animalsGrid"></div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Manga Animals. All rights reserved. 🐾</p>
+    </footer>
+
+    <script>
+        // Create animated particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        const animals = [
+            {
+                name: "Lion",
+                emoji: "🦁",
+                category: "wild",
+                description: "The lion is known as the king of animals. Lives in parts of Africa and India.",
+                funFact: "Lions can sleep up to 20 hours a day!",
+                details: "Lions are the most social species of big cats. They live in groups called 'prides'."
+            },
+            {
+                name: "Elephant",
+                emoji: "🐘",
+                category: "wild",
+                description: "Elephants are the largest land animals on Earth.",
+                funFact: "Elephants can smell water from 20 km away!",
+                details: "Elephants have very strong memories and can remember many things throughout their lives."
+            },
+            {
+                name: "Cat",
+                emoji: "🐱",
+                category: "domestic",
+                description: "Cats are one of the most popular pets.",
+                funFact: "Cats sleep up to 16 hours a day!",
+                details: "Cats are very independent animals and pay great attention to keeping themselves clean."
+            },
+            {
+                name: "Dog",
+                emoji: "🐕",
+                category: "domestic",
+                description: "Dogs are considered man's most loyal friend.",
+                funFact: "Dogs have lived with humans for over 10,000 years!",
+                details: "A dog's sense of smell is 100,000 times stronger than that of humans."
+            },
+            {
+                name: "Dolphin",
+                emoji: "🐬",
+                category: "sea",
+                description: "Dolphins are one of the smartest marine animals.",
+                funFact: "Only half of a dolphin's brain rests when they sleep!",
+                details: "Dolphins can communicate with each other and find food using ultrasound."
+            },
+            {
+                name: "Penguin",
+                emoji: "🐧",
+                category: "wild",
+                description: "Penguins are flightless birds that are excellent swimmers.",
+                funFact: "Some penguins can swim at speeds of up to 35 km per hour!",
+                details: "Penguins are very loyal and live together as a pair for life."
+            },
+            {
+                name: "Whale",
+                emoji: "🐋",
+                category: "sea",
+                description: "Whales are the largest animals on the planet.",
+                funFact: "A blue whale's heart is the size of a car!",
+                details: "Whales can sing complex songs that can be heard from thousands of kilometers away."
+            },
+            {
+                name: "Fox",
+                emoji: "🦊",
+                category: "wild",
+                description: "Foxes are intelligent and adaptable predators.",
+                funFact: "Foxes can sense Earth's magnetic field!",
+                details: "Foxes do not belong to the big cat family, but are closer to dogs."
+            },
+            {
+                name: "Eagle",
+                emoji: "🦅",
+                category: "wild",
+                description: "Eagles are one of the most powerful and fastest birds.",
+                funFact: "Eagles can reach speeds of 320 km/h!",
+                details: "Eagles' eyesight is 4-8 times better than that of humans."
+            }
+        ];
+
+        let currentCategory = 'all';
+
+        function displayAnimals(animalsToShow) {
+            const grid = document.getElementById('animalsGrid');
+            grid.innerHTML = '';
+
+            animalsToShow.forEach((animal, index) => {
+                const card = document.createElement('div');
+                card.className = 'animal-card';
+                card.style.animation = `fadeIn 0.6s ease-out ${index * 0.1}s both`;
+                card.onclick = () => openModal(animal);
+
+                card.innerHTML = `
+                    <div class="animal-image">${animal.emoji}</div>
+                    <div class="animal-info">
+                        <h3>${animal.name}</h3>
+                        <p>${animal.description}</p>
+                        <div class="fun-fact">
+                            <strong>💡 Qiziq fakt:</strong> ${animal.funFact}
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        function showSection(category) {
+            currentCategory = category;
+            const filtered = category === 'all' 
+                ? animals 
+                : animals.filter(a => a.category === category);
+            displayAnimals(filtered);
+        }
+
+        function searchAnimals() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = animals.filter(animal => 
+                animal.name.toLowerCase().includes(searchTerm) ||
+                animal.description.toLowerCase().includes(searchTerm)
+            );
+            
+            if (currentCategory !== 'all') {
+                const categoryFiltered = filtered.filter(a => a.category === currentCategory);
+                displayAnimals(categoryFiltered);
+            } else {
+                displayAnimals(filtered);
+            }
+        }
+
+        function openModal(animal) {
+            const modal = document.getElementById('modal');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalBody.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="font-size: 8rem; margin: 1rem 0; animation: bounce 1s infinite;">${animal.emoji}</div>
+                    <h2 style="color: #8b5cf6; margin-bottom: 1rem; font-size: 2.5rem; font-weight: 800;">${animal.name}</h2>
+                    <p style="line-height: 1.8; color: #9ca3af; margin-bottom: 1rem; font-size: 1.1rem;">${animal.description}</p>
+                    <p style="line-height: 1.8; color: #9ca3af; margin-bottom: 1rem; font-size: 1.1rem;">${animal.details}</p>
+                    <div style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(236, 72, 153, 0.3) 100%); border: 2px solid rgba(139, 92, 246, 0.5); color: #e9d5ff; padding: 1.5rem; border-radius: 15px; margin-top: 1.5rem; backdrop-filter: blur(10px);">
+                        <strong style="font-size: 1.2rem;">💡 Qiziq fakt:</strong><br><br>${animal.funFact}
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Initialize
+        createParticles();
+        displayAnimals(animals);
+    </script>
+</body>
+</html>
